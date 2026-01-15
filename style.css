@@ -79,34 +79,45 @@ header h1 {
     width: 70%;
     margin: auto;    
     display: grid; 
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: .8%;
 }
 
 /* CARD FILME */
 
 .cardContainer {
-    width: 220px;
-    height: 420px;
+    width: 100%;
+    min-height: 420px;
     background-color: var(--white);  
     border-radius: 10px;
     box-shadow: 2px 2px 5px black;  
     display: flex;
     flex-direction: column; 
     transition: 200ms ease;
+    overflow: hidden;
 }
 
-#moviePoster img {
+.moviePoster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+}
+
+
+.moviePoster img{
+    width: 100%;
+    height: 100%;
     border-radius: 10px 10px 0px 0px;
     object-fit: cover;
+    object-position: center;
 }
 
-#movieName {
+.movieName {
     display: block;
     font-weight: bolder;
 }
 
-#releaseDate {
+.releaseDate {
     color: var(--gray);
 }
 
