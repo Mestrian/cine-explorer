@@ -6,6 +6,10 @@
     --highlight: #ff6700; 
 }
 
+.darkTheme {
+    
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -21,13 +25,13 @@ body {
 header {
     background-color: var(--darkBlue);
     height: 70px;
-    display: flex;
-    margin-bottom: 50px;
+    display: flex; 
+    margin-bottom: 50px; 
 }
 
 header h1 {
     padding: 10px;
-    margin-left: 4%;
+    margin-left: 15%;
     text-decoration: underline;
     font-weight: bolder;
     color: var(--highlight);
@@ -49,7 +53,7 @@ header h1 {
     background-color: var(--white);
     display: flex;
     align-items: center;
-    width: 6%;
+    width: 7%;
     transition: 200ms ease;
     border-radius: 5px;
 }
