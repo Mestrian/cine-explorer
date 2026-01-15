@@ -43,26 +43,45 @@ header h1 {
     color: var(--white);
 }
 
-.navWrapper button {
-    background-color: var(--darkBlue);
+/* barraPesquisa */
+
+.barraPesquisa{
+    background-color: var(--white);
+    display: flex;
+    align-items: center;
+    width: 6%;
+    transition: 200ms ease;
+    border-radius: 5px;
+}
+
+.pesquisa{
+    width: 100%;
     border: none;
+    background-color: var(--white);
+}
+
+.barraPesquisa:focus-within{
+    width: 20%;
+}
+
+.pesquisa:focus{
+   outline: none;
+}
+
+.pesquisa:focus::placeholder {
+    color: var(--white);
 }
 
 /* SECAO FILMES */
 
 #moviesWrapper { 
-
     width: 70%;
     height: 100%;
     margin: auto;    
     display: grid; 
     grid-template-columns: repeat(4, 1fr);
-    justify-content: center;
-    
     gap: .5%;
 }
-
-
 
 /* CARD FILME */
 
