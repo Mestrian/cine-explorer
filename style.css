@@ -47,6 +47,7 @@ header h1 {
 
 .barraPesquisa{
     background-color: var(--white);
+    padding: 3px;
     display: flex;
     align-items: center;
     width: 7%;
@@ -80,7 +81,7 @@ header h1 {
     margin: auto;    
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: .8%;
+    gap: 1.8%;
 }
 
 /* CARD FILME */
@@ -103,6 +104,9 @@ header h1 {
     overflow: hidden;
 }
 
+.movieDesc { 
+    padding: 3px;
+}
 
 .moviePoster img{
     width: 100%;

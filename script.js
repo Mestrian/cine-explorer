@@ -42,20 +42,19 @@ document.addEventListener("DOMContentLoaded", () => {
     listarFilmes(mockMovies);
 })
 
-function listarFilmes(filmes){
+function listarFilmes(filmes) {
     filmes.forEach(filme => {
-       const filmeCard = criarCard(filme); 
+        const filmeCard = criarCard(filme);
 
-       moviesWrapper.append(filmeCard);
+        moviesWrapper.append(filmeCard);
     });
-} 
+}
 
 function criarCard(filme) {
-    const filmeCard = document.createElement("article"); 
-    filmeCard.className = "cardContainer"; 
+    const filmeCard = document.createElement("article");
+    filmeCard.className = "cardContainer";
 
     filmeCard.innerHTML = `
-    <article class="cardContainer">
             <picture class="moviePoster">
                 <img src="${filme.urlImagem}" alt="Poster">
             </picture>
@@ -64,9 +63,21 @@ function criarCard(filme) {
                 <span class="movieName">${filme.titulo}</span>
                 <span class="releaseDate">${filme.ano}</span>
             </section>
-        </article>
     `
 
     return filmeCard;
 
 }
+
+
+
+const intro = function (followers, platform) {
+
+    console.log(
+
+        `${this.name} is a ${this.niche} and he has ${followers} followers on ${platform}.`
+
+    );
+
+};
+
