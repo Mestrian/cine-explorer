@@ -1,4 +1,6 @@
 const moviesWrapper = document.querySelector("#moviesWrapper");
+const pesquisa = document.querySelector(".pesquisa");
+
 
 const mockMovies = [
     {
@@ -38,17 +40,39 @@ const mockMovies = [
     }
 ];
 
+
+//eventListeners
 document.addEventListener("DOMContentLoaded", () => {
     listarFilmes(mockMovies);
 })
 
+pesquisa.addEventListener("input", (e)=> {
+
+    const termoBusca = e.target.value.toLowerCase().trim(); 
+    filtrar(termoBusca, mockMovies, "titulo"); 
+})
+
+
 function listarFilmes(filmes) {
+    moviesWrapper.innerHTML = "";  
     filmes.forEach(filme => {
         const filmeCard = criarCard(filme);
 
         moviesWrapper.append(filmeCard);
     });
 }
+
+function filtrar(filtro, alvo, termo){ 
+    const Filtrados = alvo.filter(filme=>{
+        return filme[termo].toLowerCase().includes(filtro)
+    } 
+    )
+    listarFilmes(Filtrados); 
+}
+
+
+
+
 
 function criarCard(filme) {
     const filmeCard = document.createElement("article");
@@ -66,18 +90,6 @@ function criarCard(filme) {
     `
 
     return filmeCard;
-
 }
 
-
-
-const intro = function (followers, platform) {
-
-    console.log(
-
-        `${this.name} is a ${this.niche} and he has ${followers} followers on ${platform}.`
-
-    );
-
-};
 
