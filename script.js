@@ -1,78 +1,63 @@
+"use strict";
+
+const API_KEY_TMDB = 'f46adc27deffeca0de3547f864540d22'; 
+const BASE_URL_TMDB = 'https://api.themoviedb.org/3';
+const IMG_URL_TMDB = 'https://image.tmdb.org/t/p/w500';
+
 const moviesWrapper = document.querySelector("#moviesWrapper");
 const pesquisa = document.querySelector(".pesquisa");
 
+let mockMovies = []; 
 
-const mockMovies = [
-    {
-        titulo: "Interestelar",
-        ano: 2014,
-        nota: 8.7,
-        genero: "Ficção Científica",
-        urlImagem: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=500"
-    },
-    {
-        titulo: "Batman",
-        ano: 2008,
-        nota: 9.0,
-        genero: "Ação",
-        urlImagem: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=500"
-    },
-    {
-        titulo: "O Senhor dos Anéis",
-        ano: 2003,
-        nota: 9.0,
-        genero: "Fantasia",
-        urlImagem: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=500"
-    },
-    {
-        titulo: "Toy Story",
-        ano: 1995,
-        nota: 8.3,
-        genero: "Animação",
-        urlImagem: "https://images.unsplash.com/photo-1535573386627-b131b8168155?auto=format&fit=crop&q=80&w=500"
-    },
-    {
-        titulo: "Pulp Fiction",
-        ano: 1994,
-        nota: 8.9,
-        genero: "Crime",
-        urlImagem: "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=500"
-    }
-];
-
-
-//eventListeners
+// EVENT LISTENERS
 document.addEventListener("DOMContentLoaded", () => {
-    listarFilmes(mockMovies);
-})
+    carregarFilmes(); 
+});
 
-pesquisa.addEventListener("input", (e)=> {
-
+pesquisa.addEventListener("input", (e) => {
     const termoBusca = e.target.value.toLowerCase().trim(); 
     filtrar(termoBusca, mockMovies, "titulo"); 
-})
+});
 
+// CARREGAR DADOS
+async function carregarFilmes() {
+    try { 
+        const resposta = await fetch(`${BASE_URL_TMDB}/trending/movie/week?api_key=${API_KEY_TMDB}&language=pt-BR`);
+
+        if (!resposta.ok) throw new Error("Erro ao conectar com a API");
+        
+        const dados = await resposta.json(); 
+
+        mockMovies = dados.results.map(filme => ({
+            titulo: filme.title,
+            ano: filme.release_date ? filme.release_date.split("-")[0] : "N/A", 
+            nota: filme.vote_average ? filme.vote_average.toFixed(1) : "0.0",
+            urlImagem: filme.poster_path ? `${IMG_URL_TMDB}${filme.poster_path}` : "https://via.placeholder.com/500x750?text=Sem+Poster",
+        }));
+
+        listarFilmes(mockMovies); 
+
+    } catch (error) {
+        console.error("Algo deu errado:", error);
+        moviesWrapper.innerHTML = "<p>Erro ao carregar os filmes</p>";
+    }
+}
+
+// FUNÇÕES CORE
+function filtrar(filtro, alvo, termo) { 
+    const Filtrados = alvo.filter(filme => {
+        return filme[termo].toLowerCase().includes(filtro);
+    });
+    listarFilmes(Filtrados); 
+}
 
 function listarFilmes(filmes) {
     moviesWrapper.innerHTML = "";  
     filmes.forEach(filme => {
         const filmeCard = criarCard(filme);
-
         moviesWrapper.append(filmeCard);
     });
 }
-
-function filtrar(filtro, alvo, termo){ 
-    const Filtrados = alvo.filter(filme=>{
-        return filme[termo].toLowerCase().includes(filtro)
-    } 
-    )
-    listarFilmes(Filtrados); 
-}
-
-
-
-
 
 function criarCard(filme) {
     const filmeCard = document.createElement("article");
@@ -80,16 +65,13 @@ function criarCard(filme) {
 
     filmeCard.innerHTML = `
             <picture class="moviePoster">
-                <img src="${filme.urlImagem}" alt="Poster">
+                <img src="${filme.urlImagem}" alt="Poster de ${filme.titulo}" loading="lazy">
             </picture>
 
             <section class="movieDesc">
                 <span class="movieName">${filme.titulo}</span>
                 <span class="releaseDate">${filme.ano}</span>
             </section>
-    `
-
+    `;
     return filmeCard;
 }
-
-
