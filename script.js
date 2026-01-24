@@ -1,6 +1,6 @@
 "use strict";
 
-const API_KEY_TMDB = 'f46adc27deffeca0de3547f864540d22'; 
+
 const BASE_URL_TMDB = 'https://api.themoviedb.org/3';
 const IMG_URL_TMDB = 'https://image.tmdb.org/t/p/w500';
 
