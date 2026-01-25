@@ -33,6 +33,10 @@ header h1 {
     color: var(--highlight);
 }
 
+header h1 a:visited {
+    color: var(--highlight);
+}
+
 .navWrapper {
     display: flex;
     flex-grow: 1;
@@ -61,8 +65,10 @@ header h1 {
     background-color: var(--white);
 }
 
-.barraPesquisa:focus-within{
-    width: 20%;
+.barraPesquisa:focus-within,
+.barraPesquisa:has(.pesquisa:not(:placeholder-shown))
+{
+    width: 40%;
     box-shadow: 2px 2px 1px var(--lightBlue);
 }
 
@@ -76,7 +82,7 @@ header h1 {
 
 /* SECAO FILMES */
 
-#moviesWrapper { 
+#trendingMoviesWrapper { 
     width: 70%;
     margin: auto;    
     display: grid; 
@@ -132,4 +138,17 @@ header h1 {
     z-index: 1;
     box-shadow: 2px 2px 30px black;
     cursor: pointer;
+}
+
+/* LOADING IMG PLACEHOLDER */
+
+.imgPlaceholder {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+    animation: piscando 1.5s infinite;
+}
+
+@keyframes piscando {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
