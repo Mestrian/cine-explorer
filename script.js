@@ -1,7 +1,7 @@
 "use strict";
 
 const BASE_URL_TMDB = 'https://api.themoviedb.org/3';
-const IMG_URL_TMDB = 'https://image.tmdb.org/t/p/w500';
+const IMG_URL_TMDB = 'https://image.tmdb.org/t/p/w342';
 let timerPesquisa; 
 
 const trendingMoviesWrapper = document.querySelector("#trendingMoviesWrapper");
@@ -27,6 +27,12 @@ pesquisa.addEventListener("input", (e) => {
 
 // CARREGAR DADOS
 async function carregarFilmes() {
+
+    if (trendingMovies.length > 0) {
+        listarFilmes(trendingMovies); 
+        return;
+    }
+
     try { 
         const resposta = await fetch(`${BASE_URL_TMDB}/trending/movie/week?api_key=${API_KEY_TMDB}&language=pt-BR`);
 
@@ -84,10 +90,15 @@ async function pesquisarFilmes(termo){
 
 function listarFilmes(filmes) {
     trendingMoviesWrapper.innerHTML = "";  
+
+    const fragmento = document.createDocumentFragment();
+
     filmes.forEach(filme => {
         const filmeCard = criarCard(filme);
-        trendingMoviesWrapper.append(filmeCard);
+        fragmento.append(filmeCard);
     });
+
+    trendingMoviesWrapper.append(fragmento);
 }
 
 function criarCard(filme) {
