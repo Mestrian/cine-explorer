@@ -14,7 +14,6 @@
 
 body {
     background-color: var(--white);
-    
 }
 
 /* CABEÇALHO */
@@ -30,10 +29,11 @@ header h1 {
     margin-left: 15%;
     text-decoration: underline;
     font-weight: bolder;
-    color: var(--highlight);
 }
 
-header h1 a:visited {
+header h1 a, 
+header h1 a:visited
+{ 
     color: var(--highlight);
 }
 
@@ -104,7 +104,7 @@ header h1 a:visited {
     overflow: hidden;
 }
 
-.moviePoster {
+.moviePoster{
     width: 100%;
     aspect-ratio: 2/3;
     overflow: hidden;
@@ -138,6 +138,97 @@ header h1 a:visited {
     z-index: 1;
     box-shadow: 2px 2px 30px black;
     cursor: pointer;
+}
+
+/* CARD FILME MAIOR */
+
+.backgroundMovieSelected {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+.biggerMovieCard {
+    background-color: var(--darkBlue); 
+    width: 70%; 
+    height: 70%;
+    display: flex; 
+    border-radius: 15px;
+    overflow: hidden; 
+    color: var(--white);
+}
+
+.biggerMoviePoster {
+    width: 40%;
+    height: 100%;
+}
+
+.biggerMoviePoster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.biggerDetails {
+    
+}
+
+.biggerDetails h2 { 
+
+    
+}
+
+/* circulo nota */
+
+.user-score-circle {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: #081c22; /* Azul quase preto original do TMDB */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.score-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* Faz a barra começar do topo */
+}
+
+.score-track {
+    fill: none;
+    stroke: #204529; /* Verde bem escuro de fundo */
+    stroke-width: 3;
+}
+
+.score-bar {
+    fill: none;
+    stroke: #21d07a; /* Verde brilhante da nota */
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 113.1; /* Comprimento total */
+    stroke-dashoffset: 113.1; /* Inicia "vazio" */
+    transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.score-number {
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: sans-serif;
 }
 
 /* LOADING IMG PLACEHOLDER */

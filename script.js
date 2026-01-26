@@ -21,7 +21,7 @@ pesquisa.addEventListener("input", (e) => {
 
     timerPesquisa = setTimeout(() => {
         pesquisarFilmes(termoBusca, trendingMovies, "titulo"); 
-    }, 350);
+    }, 250);
 
 });
 
