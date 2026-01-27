@@ -1,245 +1,296 @@
 :root {
-    --darkBlue: #032541;
-    --lightBlue: #556F81;
-    --gray: #979797;
-    --white: #ebebeb;
-    --highlight: #ff6700; 
+  --darkBlue: #032541;
+  --lightBlue: #556f81;
+  --gray: #979797;
+  --white: #ebebeb;
+  --highlight: #ff6700;
 }
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: var(--white);
+  background-color: var(--white);
 }
 
 /* CABEÇALHO */
 header {
-    background-color: var(--darkBlue);
-    height: 70px;
-    display: flex; 
-    margin-bottom: 50px; 
+  background-color: var(--darkBlue);
+  height: 70px;
+  display: flex;
+  margin-bottom: 50px;
 }
 
 header h1 {
-    padding: 10px;
-    margin-left: 15%;
-    text-decoration: underline;
-    font-weight: bolder;
+  padding: 10px;
+  margin-left: 15%;
+  text-decoration: underline;
+  font-weight: bolder;
 }
 
-header h1 a, 
-header h1 a:visited
-{ 
-    color: var(--highlight);
+header h1 a,
+header h1 a:visited {
+  color: var(--highlight);
 }
 
 .navWrapper {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row;
-    align-items: center;
-    gap: 2%;
-    margin-left: 1%;
-    color: var(--white);
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 2%;
+  margin-left: 1%;
+  color: var(--white);
 }
 
 /* barraPesquisa */
 
-.barraPesquisa{
-    background-color: var(--white);
-    padding: 3px;
-    display: flex;
-    align-items: center;
-    width: 7%;
-    transition: 200ms ease;
-    border-radius: 5px;
+.barraPesquisa {
+  background-color: var(--white);
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  width: 7%;
+  transition: 200ms ease;
+  border-radius: 5px;
 }
 
-.pesquisa{
-    width: 100%;
-    border: none;
-    background-color: var(--white);
+.pesquisa {
+  width: 100%;
+  border: none;
+  background-color: var(--white);
 }
 
 .barraPesquisa:focus-within,
-.barraPesquisa:has(.pesquisa:not(:placeholder-shown))
-{
-    width: 40%;
-    box-shadow: 2px 2px 1px var(--lightBlue);
+.barraPesquisa:has(.pesquisa:not(:placeholder-shown)) {
+  width: 40%;
+  box-shadow: 2px 2px 1px var(--lightBlue);
 }
 
-.pesquisa:focus{
-   outline: none;
+.pesquisa:focus {
+  outline: none;
 }
 
 .pesquisa:focus::placeholder {
-    color: var(--white);
+  color: var(--white);
 }
 
 /* SECAO FILMES */
 
-#trendingMoviesWrapper { 
-    width: 70%;
-    margin: auto;    
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.8%;
+#trendingMoviesWrapper {
+  width: 70%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.8%;
 }
 
 /* CARD FILME */
 
 .cardContainer {
-    width: 100%;
-    min-height: 420px;
-    background-color: var(--white);  
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px black;  
-    display: flex;
-    flex-direction: column; 
-    transition: 200ms ease;
-    overflow: hidden;
+  width: 100%;
+  min-height: 420px;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px black;
+  display: flex;
+  flex-direction: column;
+  transition: 200ms ease;
+  overflow: hidden;
 }
 
-.moviePoster{
-    width: 100%;
-    aspect-ratio: 2/3;
-    overflow: hidden;
+.moviePoster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
 }
 
-.movieDesc { 
-    padding: 3px;
+.movieDesc {
+  padding: 3px;
 }
 
-.moviePoster img{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px 10px 0px 0px;
-    object-fit: cover;
-    object-position: center;
+.moviePoster img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 10px 0px 0px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .movieName {
-    display: block;
-    font-weight: bolder;
+  display: block;
+  font-weight: bolder;
 }
 
 .releaseDate {
-    color: var(--gray);
+  color: var(--gray);
 }
 
 /* CARD FILME HOVER */
 
 .cardContainer:hover {
-    transform: scale(1.05);
-    z-index: 1;
-    box-shadow: 2px 2px 30px black;
-    cursor: pointer;
+  transform: scale(1.05);
+  z-index: 1;
+  box-shadow: 2px 2px 30px black;
+  cursor: pointer;
 }
 
 /* CARD FILME MAIOR */
 
 .backgroundMovieSelected {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    z-index: 1000;
+  z-index: 1000;
 }
 
 .biggerMovieCard {
-    background-color: var(--darkBlue); 
-    width: 70%; 
-    height: 70%;
-    display: flex; 
-    border-radius: 15px;
-    overflow: hidden; 
-    color: var(--white);
+  background-color: var(--darkBlue);
+  width: 60%;
+  height: 60vh;
+  display: flex;
+  border-radius: 15px;
+  overflow: hidden;
+  color: var(--white);
+
+  justify-content: center;
 }
 
 .biggerMoviePoster {
-    width: 40%;
-    height: 100%;
+  width: 40%;
+  height: 100%;
+
+  position: relative;
 }
 
 .biggerMoviePoster img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.metaDados {
+  display: flex;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-top: 5px;
+  align-self: center;
+
+  text-decoration: underline;
+}
+
+.tagline {
+  font-style: italic;
+  opacity: 0.7;
+  font-size: 1.1rem;
+  margin: 10px 0px;
+
 }
 
 .biggerDetails {
-    
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
 }
 
-.biggerDetails h2 { 
+.biggerDetails h2 {
+  margin-top: 6%;
 
-    
+  font-weight: bolder;
+  font-size: 3rem;
+
+  color: var(--white);
 }
+
+.biggerDetails h3 { 
+  font-size: 1.8rem;
+  text-decoration: underline;
+  padding: 2%;
+}
+
+.sinopse { 
+  padding-left: 2%;
+  width: 55%;
+  
+  font-size: 1.1rem;
+
+  background-color: var(--highlight);
+}
+
 
 /* circulo nota */
 
 .user-score-circle {
-    position: relative;
-    width: 60px;
-    height: 60px;
-    background-color: #081c22; /* Azul quase preto original do TMDB */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  bottom: 20px;
+  right: -30px;
+
+  width: 60px;
+  height: 60px;
+  background-color: #081c22; /* Azul quase preto original do TMDB */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .score-svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg); /* Faz a barra começar do topo */
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* Faz a barra começar do topo */
 }
 
 .score-track {
-    fill: none;
-    stroke: #204529; /* Verde bem escuro de fundo */
-    stroke-width: 3;
+  fill: none;
+  stroke: #204529; /* Verde bem escuro de fundo */
+  stroke-width: 3;
 }
 
 .score-bar {
-    fill: none;
-    stroke: #21d07a; /* Verde brilhante da nota */
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-dasharray: 113.1; /* Comprimento total */
-    stroke-dashoffset: 113.1; /* Inicia "vazio" */
-    transition: stroke-dashoffset 1s ease-in-out;
+  fill: none;
+  stroke: #21d07a; /* Verde brilhante da nota */
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 113.1; /* Comprimento total */
+  stroke-dashoffset: 113.1; /* Inicia "vazio" */
+  transition: stroke-dashoffset 1s ease-in-out;
 }
 
 .score-number {
-    position: absolute;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    font-family: sans-serif;
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
 
 /* LOADING IMG PLACEHOLDER */
 
 .imgPlaceholder {
-    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-    background-size: 200% 100%;
-    animation: piscando 1.5s infinite;
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+  animation: piscando 1.5s infinite;
 }
 
 @keyframes piscando {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }

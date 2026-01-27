@@ -1,130 +1,130 @@
 "use strict";
 
-const BASE_URL_TMDB = 'https://api.themoviedb.org/3';
-const IMG_URL_TMDB = 'https://image.tmdb.org/t/p/w342';
-let timerPesquisa; 
+const BASE_URL_TMDB = "https://api.themoviedb.org/3";
+const IMG_URL_TMDB = "https://image.tmdb.org/t/p/w342";
+let timerPesquisa;
 
 const trendingMoviesWrapper = document.querySelector("#trendingMoviesWrapper");
 const pesquisa = document.querySelector(".pesquisa");
 
-let trendingMovies = []; 
+let trendingMovies = [];
 
 // EVENT LISTENERS
 document.addEventListener("DOMContentLoaded", () => {
-    carregarFilmes(); 
+  carregarFilmes();
 });
 
 pesquisa.addEventListener("input", (e) => {
-    const termoBusca = e.target.value.toLowerCase().trim();
-    
-    clearTimeout(timerPesquisa);
+  const termoBusca = e.target.value.toLowerCase().trim();
 
-    timerPesquisa = setTimeout(() => {
-        pesquisarFilmes(termoBusca, trendingMovies, "titulo"); 
-    }, 250);
+  clearTimeout(timerPesquisa);
 
+  timerPesquisa = setTimeout(() => {
+    pesquisarFilmes(termoBusca, trendingMovies, "titulo");
+  }, 250);
 });
 
 // CARREGAR DADOS
 async function carregarFilmes() {
+  if (trendingMovies.length > 0) {
+    listarFilmes(trendingMovies);
+    return;
+  }
 
-    if (trendingMovies.length > 0) {
-        listarFilmes(trendingMovies); 
-        return;
-    }
+  try {
+    const resposta = await fetch(
+      `${BASE_URL_TMDB}/trending/movie/week?api_key=${API_KEY_TMDB}&language=pt-BR`,
+    );
 
-    try { 
-        const resposta = await fetch(`${BASE_URL_TMDB}/trending/movie/week?api_key=${API_KEY_TMDB}&language=pt-BR`);
+    if (!resposta.ok) throw new Error("Erro ao conectar com a API");
 
-        if (!resposta.ok) throw new Error("Erro ao conectar com a API");
-        
-        const dados = await resposta.json(); 
+    const dados = await resposta.json();
 
-        trendingMovies = dados.results.map(filme => ({
-            titulo: filme.title,
-            ano: filme.release_date ? filme.release_date.split("-")[0] : "N/A", 
-            nota: filme.vote_average ? filme.vote_average.toFixed(1) : "0.0",
-            urlImagem: filme.poster_path ? `${IMG_URL_TMDB}${filme.poster_path}` : "https://via.placeholder.com/500x750?text=Sem+Poster",
-        }));
+    trendingMovies = dados.results.map((filme) => ({
+      titulo: filme.title,
+      ano: filme.release_date ? filme.release_date.split("-")[0] : "N/A",
+      nota: filme.vote_average ? filme.vote_average.toFixed(1) : "0.0",
+      urlImagem: filme.poster_path
+        ? `${IMG_URL_TMDB}${filme.poster_path}`
+        : "https://via.placeholder.com/500x750?text=Sem+Poster",
+    }));
 
-        listarFilmes(trendingMovies); 
-
-    } catch (error) {
-        console.error("Algo deu errado:", error);
-        trendingMoviesWrapper.innerHTML = "<p>Erro ao carregar os filmes</p>";
-    }
+    listarFilmes(trendingMovies);
+  } catch (error) {
+    console.error("Algo deu errado:", error);
+    trendingMoviesWrapper.innerHTML = "<p>Erro ao carregar os filmes</p>";
+  }
 }
 
-async function pesquisarFilmes(termo){
+async function pesquisarFilmes(termo) {
+  if (!termo) {
+    listarFilmes(trendingMovies);
+    return;
+  }
 
-    if (!termo) {
-        listarFilmes(trendingMovies);
-        return;
-    }
+  try {
+    const url = `${BASE_URL_TMDB}/search/movie?api_key=${API_KEY_TMDB}&language=pt-BR&query=${termo}`;
 
-    try {
-        const url = `${BASE_URL_TMDB}/search/movie?api_key=${API_KEY_TMDB}&language=pt-BR&query=${termo}`;
+    const resposta = await fetch(url);
 
-        const resposta = await fetch(url);
+    if (!resposta.ok) throw new Error("Erro ao se conectar a API");
 
-        if(!resposta.ok) throw new Error('Erro ao se conectar a API'); 
-        
-        const dados = await resposta.json();
-        
-        const resultadosDaBusca = dados.results.map(filme=> ({
-            titulo: filme.title,
-            ano: filme.release_date ? filme.release_date.split("-")[0] : "N/A",
-            nota: filme.vote_average ? filme.vote_average.toFixed(1) : "0.0",
-            urlImagem: filme.poster_path ? `${IMG_URL_TMDB}${filme.poster_path}` : "https://via.placeholder.com/500x750?text=Sem+Poster"
-        }))
+    const dados = await resposta.json();
 
-        listarFilmes(resultadosDaBusca); 
-    }  catch (error) {
-        console.log ("Falha na pesquisa: ", error);
-    }
+    const resultadosDaBusca = dados.results.map((filme) => ({
+      titulo: filme.title,
+      ano: filme.release_date ? filme.release_date.split("-")[0] : "N/A",
+      nota: filme.vote_average ? filme.vote_average.toFixed(1) : "0.0",
+      urlImagem: filme.poster_path
+        ? `${IMG_URL_TMDB}${filme.poster_path}`
+        : "https://via.placeholder.com/500x750?text=Sem+Poster",
+    }));
+
+    listarFilmes(resultadosDaBusca);
+  } catch (error) {
+    console.log("Falha na pesquisa: ", error);
+  }
 }
-
-
 
 // FUNÇÕES CORE
 
 function listarFilmes(filmes) {
-    trendingMoviesWrapper.innerHTML = "";  
+  trendingMoviesWrapper.innerHTML = "";
 
-    const fragmento = document.createDocumentFragment();
+  const fragmento = document.createDocumentFragment();
 
-    filmes.forEach(filme => {
-        const filmeCard = criarCard(filme);
-        fragmento.append(filmeCard);
-    });
+  filmes.forEach((filme) => {
+    const filmeCard = criarCard(filme);
+    fragmento.append(filmeCard);
+  });
 
-    trendingMoviesWrapper.append(fragmento);
+  trendingMoviesWrapper.append(fragmento);
 }
 
 function criarCard(filme) {
-    const filmeCard = document.createElement("article");
-    filmeCard.className = "cardContainer";
+  const filmeCard = document.createElement("article");
+  filmeCard.className = "cardContainer";
 
-    const img = new Image();
-    img.src = filme.urlImagem;
-    img.alt = `Poster de ${filme.titulo}`;
+  const img = new Image();
+  img.src = filme.urlImagem;
+  img.alt = `Poster de ${filme.titulo}`;
 
-    const posterContainer = document.createElement("picture"); 
-    posterContainer.className = "moviePoster imgPlaceholder";
+  const posterContainer = document.createElement("picture");
+  posterContainer.className = "moviePoster imgPlaceholder";
 
-    img.onload = () => {
-        posterContainer.classList.remove("imgPlaceholder");
-        posterContainer.appendChild(img);
-    }
+  img.onload = () => {
+    posterContainer.classList.remove("imgPlaceholder");
+    posterContainer.appendChild(img);
+  };
 
-    filmeCard.innerHTML = `
+  filmeCard.innerHTML = `
             <section class="movieDesc">
                 <span class="movieName">${filme.titulo}</span>
                 <span class="releaseDate">${filme.ano}</span>
             </section>
     `;
 
-    filmeCard.prepend(posterContainer);
-    
-    return filmeCard;
+  filmeCard.prepend(posterContainer);
+
+  return filmeCard;
 }
