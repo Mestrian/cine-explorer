@@ -250,6 +250,11 @@ header h1 a:visited {
   color: var(--white);
 }
 
+.biggerTitle {
+  text-decoration: underline;
+  word-spacing: 0.1rem;
+}
+
 .biggerDetails h3 { 
   font-size: 1.8rem;
   text-decoration: underline;

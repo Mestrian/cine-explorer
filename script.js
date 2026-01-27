@@ -1,5 +1,7 @@
+"use strict";
+
 import { getTrending, getSearch, getMovieDetails } from "./api.js";
-import { listarFilmes, renderizarDetalhes } from "./ui.js";
+import { listarFilmes, renderizarDetalhes, limparModal } from "./ui.js";
 
 const trendingMoviesWrapper = document.querySelector("#trendingMoviesWrapper");
 const pesquisa = document.querySelector(".pesquisa");
@@ -13,17 +15,20 @@ function formatar(f) {
     id: f.id,
     titulo: f.title,
     ano: f.release_date ? f.release_date.split("-")[0] : "N/A",
-    urlImagem: f.poster_path ? `https://image.tmdb.org/t/p/w200${f.poster_path}` : "https://via.placeholder.com/200x300?text=Sem+Poster"
+    urlImagem: f.poster_path ? `https://image.tmdb.org/t/p/w300${f.poster_path}` : "https://via.placeholder.com/200x300?text=Sem+Poster"
   };
 }
 
 async function iniciar() {
   const dados = await getTrending();
-  trendingMovies = dados.results.map(formatar);
-  listarFilmes(trendingMovies, trendingMoviesWrapper, abrirModal);
+  if (dados) {
+    trendingMovies = dados.results.map(formatar);
+    listarFilmes(trendingMovies, trendingMoviesWrapper);
+  }
 }
 
 async function abrirModal(id) {
+    limparModal();
     const detalhes = await getMovieDetails(id);
     renderizarDetalhes(detalhes);
 }
@@ -31,16 +36,32 @@ async function abrirModal(id) {
 pesquisa.addEventListener("input", (e) => {
   const termo = e.target.value.trim();
   clearTimeout(timerPesquisa);
+
   timerPesquisa = setTimeout(async () => {
     if (!termo) {
-      listarFilmes(trendingMovies, trendingMoviesWrapper, abrirModal);
+      listarFilmes(trendingMovies, trendingMoviesWrapper);
       return;
     }
     const busca = await getSearch(termo);
-    listarFilmes(busca.results.map(formatar), trendingMoviesWrapper, abrirModal);
+    if (busca) {
+        listarFilmes(busca.results.map(formatar), trendingMoviesWrapper);
+
+        busca.results = null;
+    }
   }, 300);
 });
 
 modal.addEventListener("click", (e) => e.target === modal && (modal.style.display = "none"));
 
+trendingMoviesWrapper.addEventListener("click", (event) => {
+  const card = event.target.closest(".cardContainer");
+
+  if (card) {
+    const filmeId = card.getAttribute("data-id");
+    abrirModal(filmeId);
+  }
+});
+
 document.addEventListener("DOMContentLoaded", iniciar);
+
+console.log(window.__mutationObserverInstances || "O navegador não expõe diretamente, mas verifique o Heap Snapshot");
