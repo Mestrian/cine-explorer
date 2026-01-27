@@ -1,4 +1,8 @@
-const modal = document.querySelector(".backgroundMovieSelected");
+"use strict"; 
+
+import {dom} from "./dom.js";
+
+const modal = dom.modal;
 
 export function listarFilmes(filmes, container) {
   container.innerHTML = "";
@@ -39,17 +43,14 @@ function criarCard(filme) {
 }
 
 export function limparModal(){
-  const modal = document.querySelector(".backgroundMovieSelected");
-  const posterImg = document.querySelector(".biggerMoviePoster img");
-  const modalCard = document.querySelector(".biggerMovieCard");
+  const posterImg = dom.modalPoster; 
+  const modalCard = dom.modalCard;
 
-  // Esconde a imagem antiga IMEDIATAMENTE
   posterImg.style.opacity = "0"; 
-  posterImg.src = ""; // Esvazia o src
+  posterImg.src = ""; 
 
-  // Limpa textos e fundo
-  document.querySelector(".biggerTitle").innerText = "Carregando...";
-  document.querySelector("#yearDate").innerText = "";
+  dom.modalTitle.innerText = "Carregando...";
+  dom.modalYear.innerText = "";
   modalCard.style.setProperty('--card-bg-img', 'none');
   modalCard.style.backgroundColor = '#032541';
 
@@ -57,14 +58,14 @@ export function limparModal(){
 }
 
 export function renderizarDetalhes(f) {
-  const modalCard = document.querySelector(".biggerMovieCard");
-  const posterImg = document.querySelector(".biggerMoviePoster img");
+  const modalCard = dom.modalCard;
+  const posterImg = dom.modalPoster;
   
-  document.querySelector(".biggerTitle").innerText = f.title;
-  document.querySelector("#yearDate").innerText = `(${f.release_date.split("-")[0]})`;
-  document.querySelector(".tagline").innerText = f.tagline ? `"${f.tagline}"` : "";
-  document.querySelector(".sinopse").innerText = f.overview || "Sinopse não disponível.";
-  document.querySelector(".score-number").innerText = f.vote_average.toFixed(1);
+  dom.modalTitle.innerText = f.title;
+  dom.modalYear.innerText = `(${f.release_date.split("-")[0]})`;
+  dom.modalTagline.innerText = f.tagline ? `"${f.tagline}"` : "";
+  dom.modalSinopse.innerText = f.overview || "Sinopse não disponível.";
+  dom.modalScore.innerText = f.vote_average.toFixed(1);
   posterImg.onload = () => {
     posterImg.style.opacity = "1";
   }
@@ -78,6 +79,6 @@ export function renderizarDetalhes(f) {
   }
 
   const percent = f.vote_average * 10;
-  document.querySelector("#circleBar").style.strokeDashoffset = 113.1 - (113.1 * percent) / 100;
+  dom.modalCircleBar.style.strokeDashoffset = 113.1 - (113.1 * percent) / 100;
   modal.style.display = "flex";
 }

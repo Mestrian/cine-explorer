@@ -2,10 +2,11 @@
 
 import { getTrending, getSearch, getMovieDetails } from "./api.js";
 import { listarFilmes, renderizarDetalhes, limparModal } from "./ui.js";
+import {dom} from "./dom.js"; 
 
-const trendingMoviesWrapper = document.querySelector("#trendingMoviesWrapper");
-const pesquisa = document.querySelector(".pesquisa");
-const modal = document.querySelector(".backgroundMovieSelected");
+const trendingMoviesWrapper = dom.trendingWrapper;
+const pesquisa = dom.searchInput; 
+const modal = dom.modal;
 
 let trendingMovies = [];
 let timerPesquisa;
