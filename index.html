@@ -12,8 +12,12 @@
     <header>
         <h1><a href="main.html">CineExplorer</a></h1>
         <div class="navWrapper">
-            <p>Filmes</p>
-            <p>Séries</p>
+            
+            <section class="navOptionsWrapper">
+                <button data-mode="movie" class="navOption active">Filmes</button>
+                <button data-mode="tv" class="navOption">Séries</button>
+            </section>
+            
             <div class="barraPesquisa">
                 <input name="search" type="text" class="pesquisa" placeholder="Pesquisar"> <svg
                     xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
@@ -23,6 +27,12 @@
             </div>
         </div>
     </header>
+
+    <div class="trendingToggle">
+        <h2>Filmes mais falados </h2>
+        <button data-type="day" class="navOption active">na Semana</button>
+        <button data-type="week" class="navOption">Hoje</button>
+    </div>
 
 
     <section id="trendingMoviesWrapper">

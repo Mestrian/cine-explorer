@@ -1,8 +1,13 @@
 "use strict"; 
 
 import {dom} from "./dom.js";
+import {subscribe} from "./state.js";
 
 const modal = dom.modal;
+
+subscribe((state)=> {
+  listarFilmes(state.items, dom.trendingWrapper);
+})
 
 export function listarFilmes(filmes, container) {
   container.innerHTML = "";
@@ -60,25 +65,40 @@ export function limparModal(){
 export function renderizarDetalhes(f) {
   const modalCard = dom.modalCard;
   const posterImg = dom.modalPoster;
-  
-  dom.modalTitle.innerText = f.title;
-  dom.modalYear.innerText = `(${f.release_date.split("-")[0]})`;
+
+  const titulo = f.title || f.name;
+  const data = f.release_date || f.first_air_date;
+  const ano = data ? data.split("-")[0] : "N/A";
+  const poster = f.poster_path || f.backdrop_path;
+  const backdrop = f.backdrop_path || f.poster_path;
+  const nota = typeof f.vote_average === "number" ? f.vote_average : 0;
+
+  dom.modalTitle.innerText = titulo;
+  dom.modalYear.innerText = `(${ano})`;
   dom.modalTagline.innerText = f.tagline ? `"${f.tagline}"` : "";
   dom.modalSinopse.innerText = f.overview || "Sinopse não disponível.";
-  dom.modalScore.innerText = f.vote_average.toFixed(1);
-  posterImg.onload = () => {
-    posterImg.style.opacity = "1";
+  dom.modalScore.innerText = nota.toFixed(1);
+
+  posterImg.style.opacity = "0";
+  posterImg.addEventListener(
+    "load",
+    () => (posterImg.style.opacity = "1"),
+    { once: true }
+  );
+
+  posterImg.src = poster
+    ? `https://image.tmdb.org/t/p/w780${poster}`
+    : "https://via.placeholder.com/300x450?text=Sem+Imagem";
+
+  if (backdrop) {
+    modalCard.style.setProperty(
+      "--card-bg-img",
+      `url('https://image.tmdb.org/t/p/w300${backdrop}')`
+    );
+    modalCard.style.backgroundColor = "transparent";
   }
-  posterImg.src = `https://image.tmdb.org/t/p/w500${f.poster_path}`;
 
-
-  const backdropPath = f.backdrop_path || f.poster_path;
-  if(backdropPath) {
-    modalCard.style.setProperty('--card-bg-img', `url('https://image.tmdb.org/t/p/w300${backdropPath}')`);
-    modalCard.style.backgroundColor = 'transparent';
-  }
-
-  const percent = f.vote_average * 10;
-  dom.modalCircleBar.style.strokeDashoffset = 113.1 - (113.1 * percent) / 100;
-  modal.style.display = "flex";
+  const percent = nota * 10;
+  dom.modalCircleBar.style.strokeDashoffset =
+    113.1 - (113.1 * percent) / 100;
 }

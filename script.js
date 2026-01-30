@@ -1,55 +1,109 @@
 "use strict";
 
 import { getTrending, getSearch, getMovieDetails } from "./api.js";
-import { listarFilmes, renderizarDetalhes, limparModal } from "./ui.js";
+import { renderizarDetalhes, limparModal } from "./ui.js";
 import {dom} from "./dom.js"; 
+import {setState, subscribe} from "./state.js";
 
 const trendingMoviesWrapper = dom.trendingWrapper;
 const pesquisa = dom.searchInput; 
 const modal = dom.modal;
 
-let trendingMovies = [];
 let timerPesquisa;
+let lastTerm = "";
+let lastSelectedItem = "";
+let lastConfig = "";
+let lastMode = "";
 
-function formatar(f) {
+
+subscribe((state) => { //ABRIR MODAL INSCRITO
+  if(!state.selectedItem) return;
+  if(state.selectedItem == lastSelectedItem) return;
+  lastSelectedItem = state.selectedItem; 
+  abrirModal(state.selectedItem, state.mode);
+})
+
+subscribe(async (state) => { //listar os trending na tela
+  const config = `${state.mode}-${state.trendingType}`
+  
+  if(state.searchTerm) return;
+
+  if(config === lastConfig) return;
+  lastConfig = config;
+
+
+  const dados = await getTrending(state.mode, state.trendingType); 
+  
+  setState({items: dados.results.map(formatar)});
+
+})
+
+
+
+
+subscribe((state) => { //pesquisar
+   
+  if(state.searchTerm == lastTerm) return;
+  lastTerm = state.searchTerm;
+
+
+  clearTimeout(timerPesquisa);
+
+  timerPesquisa = setTimeout(async () => {
+    if (!state.searchTerm) {
+      lastConfig = ""; 
+      const dados = await getTrending(state.mode, state.trendingType);
+
+      setState({
+        items: dados.results.map(formatar)
+      });
+      return;
+    }
+
+    const dados = await getSearch(state.searchTerm, state.mode);
+    setState({
+      items: dados.results.map(formatar)
+    });
+
+  }, 300)
+})
+
+
+function formatar(i) {
+  const data = i.release_date || i.first_air_date;
+  const imagem = i.poster_path || i.backdrop_path;
+
   return {
-    id: f.id,
-    titulo: f.title,
-    ano: f.release_date ? f.release_date.split("-")[0] : "N/A",
-    urlImagem: f.poster_path ? `https://image.tmdb.org/t/p/w300${f.poster_path}` : "https://via.placeholder.com/200x300?text=Sem+Poster"
+    id: i.id,
+    titulo: i.title || i.name,
+    ano: data ? data.split("-")[0] : "N/A",
+    urlImagem: imagem
+      ? `https://image.tmdb.org/t/p/w500${imagem}`
+      : "https://via.placeholder.com/200x300?text=Sem+Poster"
   };
 }
 
 async function iniciar() {
-  const dados = await getTrending();
+  const dados = await getTrending("movie", "week");
   if (dados) {
-    trendingMovies = dados.results.map(formatar);
-    listarFilmes(trendingMovies, trendingMoviesWrapper);
+    setState({items: dados.results.map(formatar)});
   }
+
+  setupModo();
+  setupTrendingType(); 
+
 }
 
-async function abrirModal(id) {
+async function abrirModal(id, mode) {
     limparModal();
-    const detalhes = await getMovieDetails(id);
+    const detalhes = await getMovieDetails(id, mode);
     renderizarDetalhes(detalhes);
 }
 
 pesquisa.addEventListener("input", (e) => {
-  const termo = e.target.value.trim();
-  clearTimeout(timerPesquisa);
-
-  timerPesquisa = setTimeout(async () => {
-    if (!termo) {
-      listarFilmes(trendingMovies, trendingMoviesWrapper);
-      return;
-    }
-    const busca = await getSearch(termo);
-    if (busca) {
-        listarFilmes(busca.results.map(formatar), trendingMoviesWrapper);
-
-        busca.results = null;
-    }
-  }, 300);
+  setState({
+    searchTerm: e.target.value.trim()
+  });
 });
 
 modal.addEventListener("click", (e) => e.target === modal && (modal.style.display = "none"));
@@ -58,11 +112,45 @@ trendingMoviesWrapper.addEventListener("click", (event) => {
   const card = event.target.closest(".cardContainer");
 
   if (card) {
-    const filmeId = card.getAttribute("data-id");
-    abrirModal(filmeId);
+    setState({selectedItem: card.getAttribute("data-id")});
   }
 });
 
+/* FUNCOES BOTOES ESTADOS */
+
+function setupModo() {
+  dom.modeWrapper.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if(!btn) return;
+    setState({mode: btn.dataset.mode})
+    dom.modeWrapper.querySelectorAll('button').forEach(b => {
+    b.classList.remove("active");
+    })
+    btn.classList.add("active");
+  })
+
+}
+
+
+function setupTrendingType() {
+  dom.trendingToggle.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+
+    if(!btn) return;
+
+    setState({trendingType: btn.dataset.type});
+
+    dom.trendingToggle.querySelectorAll("button").forEach(b => {
+      b.classList.remove("active");
+    });
+
+    btn.classList.add("active"); 
+
+  })
+}
+
+
+
 document.addEventListener("DOMContentLoaded", iniciar);
 
-console.log(window.__mutationObserverInstances || "O navegador não expõe diretamente, mas verifique o Heap Snapshot");
+

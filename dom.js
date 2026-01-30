@@ -2,7 +2,8 @@ export const dom = {
   trendingWrapper: document.querySelector("#trendingMoviesWrapper"),
   searchInput: document.querySelector(".pesquisa"),
 
-  
+  modeWrapper: document.querySelector(".navOptionsWrapper"),
+  trendingToggle: document.querySelector(".trendingToggle"), 
 
   modal: document.querySelector(".backgroundMovieSelected"),
   modalCard: document.querySelector(".biggerMovieCard"),
