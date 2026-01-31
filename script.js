@@ -10,7 +10,7 @@ const pesquisa = dom.searchInput;
 const modal = dom.modal;
 
 let timerPesquisa;
-let lastTerm = "";
+let lastTermKey = "";
 let lastSelectedItem = "";
 let lastConfig = "";
 let lastMode = "";
@@ -19,6 +19,7 @@ let lastMode = "";
 subscribe((state) => { //ABRIR MODAL INSCRITO
   if(!state.selectedItem) return;
   if(state.selectedItem == lastSelectedItem) return;
+
   lastSelectedItem = state.selectedItem; 
   abrirModal(state.selectedItem, state.mode);
 })
@@ -31,11 +32,10 @@ subscribe(async (state) => { //listar os trending na tela
   if(config === lastConfig) return;
   lastConfig = config;
 
-
   const dados = await getTrending(state.mode, state.trendingType); 
-  
   setState({items: dados.results.map(formatar)});
 
+  dom.trendingToggle.style.display = "flex";
 })
 
 
@@ -43,8 +43,9 @@ subscribe(async (state) => { //listar os trending na tela
 
 subscribe((state) => { //pesquisar
    
-  if(state.searchTerm == lastTerm) return;
-  lastTerm = state.searchTerm;
+  const termKey = `${state.searchTerm}-${state.mode}`
+  if(termKey == lastTermKey) return;
+  lastTermKey = termKey;
 
 
   clearTimeout(timerPesquisa);
@@ -64,7 +65,7 @@ subscribe((state) => { //pesquisar
     setState({
       items: dados.results.map(formatar)
     });
-
+    dom.trendingToggle.style.display = "none";
   }, 300)
 })
 

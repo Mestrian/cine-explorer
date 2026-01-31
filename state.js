@@ -3,11 +3,11 @@
 const listeners = [];
 
 export const state = {
-  mode: "movie",              //conectar
-  trendingType: "week",      //conectar
-  searchTerm: "",           //feito
-  items: [],               //feito
-  selectedItem: null      //feito
+  mode: "movie",              //movie || tv
+  trendingType: "week",      //week || day
+  searchTerm: "",           //
+  items: [],               //
+  selectedItem: null      //item id
 }
 
 export function setState(partialState){
