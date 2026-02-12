@@ -70,7 +70,7 @@ header h1 a:visited {
   background-color: transparent;
   color: var(--white);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: 200ms ease;
   padding: 6px 12px;

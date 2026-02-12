@@ -9,6 +9,20 @@ subscribe((state)=> {
   listarFilmes(state.items, dom.trendingWrapper);
 })
 
+subscribe((state) => {
+  modeVisual(state.mode)
+})
+
+function modeVisual(modoAtual) {
+
+  if(modoAtual === "movie"){
+    dom.modeText.innerText = "Filmes"; 
+    return; 
+  } 
+    dom.modeText.innerText = "Séries";
+}
+
+
 export function listarFilmes(filmes, container) {
   container.innerHTML = "";
   const fragmento = document.createDocumentFragment();
